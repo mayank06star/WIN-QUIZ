@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIN QUIZ - Home Hub</title>
+    <style>
+        :root {
+            --bg-color: #0c0d14;
+            --panel-bg: #141622;
+            --neon-blue: #00f0ff;
+            --neon-purple: #9d4edd;
+            --neon-pink: #ff007f;
+            --text-main: #ffffff;
+            --text-muted: #8c92b3;
+            --accent-orange: #ff9e00;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; }
+        .wrapper { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 24px; }
+
+        /* Welcome Text Header */
+        .welcome-header { text-align: center; margin-bottom: 10px; }
+        .welcome-header h1 { font-size: 2.8rem; text-transform: uppercase; letter-spacing: 4px; background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .welcome-header p { color: var(--text-muted); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+
+        /* Primary Join Button */
+        .btn-join-primary { width: 100%; background: transparent; border: 3px solid var(--neon-blue); border-radius: 14px; color: var(--neon-blue); font-size: 1.8rem; font-weight: 800; padding: 22px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); transition: all 0.3s ease; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-join-primary:hover { background: var(--neon-blue); color: var(--bg-color); box-shadow: 0 0 35px var(--neon-blue); transform: translateY(-2px); }
+
+        /* Meta Live Stats Panel */
+        .live-stats-box { background: var(--panel-bg); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        .stat-item h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px; }
+        .stat-item p { font-size: 1.5rem; font-weight: bold; color: #fff; }
+        .stat-item p span { color: var(--neon-pink); }
+
+        /* Podium Layout */
+        .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 15px; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 30px 20px 15px 20px; height: 160px; }
+        .podium-column { display: flex; flex-direction: column; align-items: center; width: 100px; }
+        .podium-block { width: 100%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.1rem; border-radius: 8px 8px 0 0; }
+        .rank-1 { height: 95px; background: linear-gradient(135deg, #ffe259, #ffa751); color: #000; }
+        .rank-2 { height: 70px; background: linear-gradient(135deg, #e6e9f0, #eef1f5); color: #000; }
+        .rank-3 { height: 48px; background: linear-gradient(135deg, #805326, #cd7f32); color: #fff; }
+
+        /* Navigation Tab Bar */
+        .horizontal-navbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: rgba(255, 255, 255, 0.02); padding: 8px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 16px 10px; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        .nav-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+        .nav-btn.active { color: var(--neon-blue); background: var(--panel-bg); border-color: rgba(0, 240, 255, 0.3); box-shadow: 0 0 15px rgba(0, 240, 255, 0.15); }
+
+        /* Dynamic Content Panel */
+        .content-panel { background: var(--panel-bg); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .list-section { display: none; }
+        .list-section.active-section { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .item-list { display: flex; flex-direction: column; gap: 8px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 3px solid var(--neon-purple); font-size: 0.95rem; }
+        .label-right { color: var(--neon-blue); font-weight: bold; }
+
+        @media(max-width: 650px) {
+            .horizontal-navbar { grid-template-columns: 1fr; }
+            .live-stats-box { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <header class="welcome-header">
+            <h1>Welcome to WIN QUIZ</h1>
+            <p>Compete, Stand Out, and Win</p>
+        </header>
+
+        <a href="register.html" class="btn-join-primary">⚡ Join Live Event ⚡</a>
+
+        <section class="live-stats-box">
+            <div class="stat-item"><h3>Slots Remaining</h3><p><span>42</span> / 150</p></div>
+            <div class="stat-item"><h3>Entry Cost</h3><p style="color: var(--neon-blue);">[Fee Cost]</p></div>
+            <div class="stat-item"><h3>Total Entrants</h3><p>108 Active</p></div>
+        </section>
+
+        <div class="podium-container">
+            <div class="podium-column"><div class="podium-block rank-2">2nd</div></div>
+            <div class="podium-column"><div class="podium-block rank-1">🥇 1st</div></div>
+            <div class="podium-column"><div class="podium-block rank-3">3rd</div></div>
+        </div>
+
+        <div class="horizontal-navbar">
+            <button class="nav-btn active" onclick="switchTab(event, 'winner-section')">👑 Winner List</button>
+            <button class="nav-btn" onclick="switchTab(event, 'prize-section')">🏆 Prize List</button>
+            <button class="nav-btn" onclick="switchTab(event, 'timing-section')">📅 Event Timings</button>
+        </div>
+
+        <div class="content-panel">
+            <div id="winner-section" class="list-section active-section">
+                <div class="item-list">
+                    <div class="item-row"><span>Position Rank 01</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 02</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 03</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 04</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 05</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 06</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 07</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 08</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 09</span> <span class="label-right">[User Name]</span></div>
+                    <div class="item-row"><span>Position Rank 10</span> <span class="label-right">[User Name]</span></div>
+                </div>
+            </div>
+
+            <div id="prize-section" class="list-section">
+                <div class="item-list">
+                    <div class="item-row"><span>Tier 01 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 02 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 03 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 04 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 05 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 06 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 07 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 08 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 09 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                    <div class="item-row"><span>Tier 10 Allocation</span> <span class="label-right">[Prize Value]</span></div>
+                </div>
+            </div>
+
+            <div id="timing-section" class="list-section">
+                <div class="item-list">
+                    <div class="item-row"><span>Next Slotted Event 01</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 02</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 03</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 04</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 05</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 06</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 07</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 08</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 09</span> <span class="label-right">[Date & Time]</span></div>
+                    <div class="item-row"><span>Next Slotted Event 10</span> <span class="label-right">[Date & Time]</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(e, targetId) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.list-section').forEach(s => s.classList.remove('active-section'));
+            e.currentTarget.classList.add('active');
+            document.getElementById(targetId).classList.add('active-section');
+        }
+    </script>
+</body>
+</html>
