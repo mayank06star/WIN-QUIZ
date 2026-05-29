@@ -45,4 +45,21 @@
     </script>
 </body>
 </html>
+<form id="my-form">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="email" name="email" placeholder="Email" required>
+  <input type="text" name="utr" placeholder="UTR Number" required>
+  <button type="submit">Submit Payment</button>
+</form>
 
+<script>
+  const form = document.getElementById('my-form');
+  const URL = 'https://script.google.com/macros/s/AKfycbzzbq3T1soi673o2f_RXKu2dQHPl9cMVm8O9NPdDN_jCiPmlUHh-vD6ZxR7zh-c3BHt/execE'; 
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    fetch(URL, { method: 'POST', body: new FormData(form) })
+    .then(() => alert("Submitted! Please wait for manual verification."))
+    .catch(error => console.error('Error!', error));
+  });
+</script>
