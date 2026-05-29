@@ -17,7 +17,7 @@
 
     <div class="payment-card">
         <h2>Complete Payment</h2>
-        <p>Entry Fee: ₹50</p>
+        <p>Entry Fee: ₹10</p>
         
         <div id="qr-code"></div>
 
@@ -28,12 +28,12 @@
 
     <script>
         // REPLACE THESE WITH YOUR OWN DETAILS
-        const myUpiId = "yourname@upi"; 
+        const myUpiId = "7856954560@fam"; 
         const payeeName = "WinQuiz";
-        const amount = "50.00";
+        const amount = "10.00";
 
         // Generate the UPI deep link
-        const upiUrl = `upi://pay?pa=${myUpiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=WinQuizEntry`;
+        const upiUrl = `upi://pay?pa=${7856954560@fam}&pn=${encodeURIComponent(payeeName)}&am=${10}&cu=INR&tn=WinQuizEntry`;
 
         // 1. Set the button link to open UPI apps
         document.getElementById('upi-link').href = upiUrl;
