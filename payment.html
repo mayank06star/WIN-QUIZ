@@ -2,25 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make a Payment</title>
+    <title>Make Payment</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding: 20px; }
-        .payment-box { border: 1px solid #ccc; padding: 20px; max-width: 400px; margin: auto; }
-        img { width: 200px; }
+        #qr-code { width: 250px; height: 250px; margin: 20px 0; }
+        form { max-width: 300px; margin: auto; }
+        input { display: block; width: 100%; margin: 10px 0; padding: 10px; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="payment-box">
-        <h2>Pay via UPI</h2>
-        <img src="your-qr-code.png" alt="UPI QR Code">
-        <p>UPI ID: <strong>yourname@upi</strong></p>
-        <p>After payment, please submit the UTR/Transaction ID below.</p>
-    </div>
+    <h2>Scan to Pay ₹100</h2>
+    <img id="qr-code" alt="UPI QR Code">
+    <p>Scan with any UPI app (GPay, PhonePe, Paytm).</p>
 
-    <br>
-    <iframe src="YOUR_GOOGLE_FORM_EMBED_URL" width="640" height="400" frameborder="0">Loading...</iframe>
+    <hr>
 
+    <h3>Submit Transaction Details</h3>
+    <form id="paymentForm">
+        <input type="text" name="Name" placeholder="Your Name" required>
+        <input type="text" name="UTR" placeholder="12-digit UTR/Transaction ID" required>
+        <button type="submit">Submit for Approval</button>
+    </form>
+
+    <script>
+        // 1. SET YOUR DETAILS
+        const upiID = "7856954560@fam"; // Change this
+        const amount = "10.00";      // Change this
+        
+        // 2. GENERATE QR
+        const upiLink = `upi://pay?pa=${upiID}&pn=Merchant&am=${amount}&cu=INR`;
+        const qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${encodeURIComponent(upiLink)}`;
+        document.getElementById('qr-code').src = qrUrl;
+
+        // 3. SUBMIT TO GOOGLE SHEET
+        const form = document.getElementById('paymentForm');
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3I9e7OC4mgqtkKZ7FZUYOFYBdiwOVqK8drQ5XUdUpGG9iZFA1WcBk9zW_sDQPlRyL/exec'; // Paste your Web App URL here
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            fetch(SCRIPT_URL, { method: 'POST', body: new FormData(form) })
+            .then(() => alert("Submitted! Check back later for approval."))
+            .catch(err => alert("Error submitting."));
+        });
+    </script>
 </body>
 </html>
-
